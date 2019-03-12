@@ -52,5 +52,62 @@ namespace UnitTestProject1
             order.Bonus = Bonuses.FlatTwoIfAmountMoreThanFive;
             Assert.AreEqual(43.0, order.GetTotalPrice());
         }
+        [TestMethod]
+        public void GetBonusAnonymous_Test()
+        {
+            order.Bonus = delegate (double amount)
+            {
+                return amount * 0.10;
+            }; //<-- Anonymous delegate Ex59 øvelse 2
+            Assert.AreEqual(4.5, order.GetBonus());
+
+            order.Bonus = delegate (double amount)
+            {
+                if (amount > 5)
+                {
+                    return 2.0;
+                }
+                else
+                {
+                    return 0.0;
+                }
+            }; //<-- Anonymous delegate Ex59 øvelse 2
+            Assert.AreEqual(2.0, order.GetBonus());
+        }
+        [TestMethod]
+        public void GetBonusLambda_Test()
+        {
+            order.Bonus = x => x * 0.10; // <-- lambda expression Ex59 øvelse 4.1
+            Assert.AreEqual(4.5, order.GetBonus());
+
+            order.Bonus = x =>
+            {
+                if (x > 5)
+                {
+                    return 2.0;
+                }
+                else
+                {
+                    return 0.0;
+                }
+            }; // <-- lambda expression Ex59 øvelse 4.1
+            Assert.AreEqual(2.0, order.GetBonus());
+        }
+        [TestMethod]
+        public void GetBonusByLambdaParameter_Test()
+        {
+            // Use TenPercent lambda expresssion as parameter to GetBonus
+            Assert.AreEqual(4.5, order.GetBonus(Bonuses.TenPercent));
+
+            // Use FlatTwoIfAmountMoreThanFive lambda expresssion as parameter to GetBonus
+            Assert.AreEqual(2.0, order.GetBonus(Bonuses.FlatTwoIfAmountMoreThanFive));
+        }
+        [TestMethod]
+        public void GetTotalPriceByLambdaParameter_Test()
+        {
+            Assert.AreEqual(40.5, order.GetTotalPrice(Bonuses.TenPercent));
+
+            Assert.AreEqual(43.0, order.GetTotalPrice(Bonuses.FlatTwoIfAmountMoreThanFive));
+        }
     }
 }

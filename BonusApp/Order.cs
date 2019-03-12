@@ -8,10 +8,10 @@ namespace BonusApp
 {
     public class Order
     {
-        private BonusProvider bonus;
+        private Func<double, double> bonus; //Func<double, double> Er den nye delegate i Ex59
         private List<Product> products = new List<Product>();
 
-        public BonusProvider Bonus
+        public Func<double, double> Bonus
         {
             get
             {
@@ -40,9 +40,22 @@ namespace BonusApp
         {
             return Bonus(GetValueOfProducts());
         }
+
+        //Ex59 øvelse 4.3
+        public double GetBonus(Func<double, double> func)
+        {
+            return func(GetValueOfProducts());
+        }
+
         public double GetTotalPrice()
         {
             return GetValueOfProducts() - GetBonus();
+        }
+
+        //Ex59 øvelse 4.4
+        public double GetTotalPrice(Func<double, double> func)
+        {
+            return GetValueOfProducts() - GetBonus(func);
         }
     }
 }
